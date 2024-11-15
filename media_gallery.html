@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Gallery</title>
+  <link rel="stylesheet" href="media.css">
+</head>
+<script>
+    // Redirect to login if the user is not authenticated
+    if (!localStorage.getItem("isAdmin")) {
+      window.location.href = "admin_login.html";
+    }
+  </script>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <button id="logoutButton">Logout</button>
+      </header>
+      <script>
+        document.getElementById("logoutButton").addEventListener("click", function () {
+          localStorage.removeItem("isAdmin"); // Clear session
+          window.location.href = "admin_login.html"; // Redirect to login
+        });
+      </script>
+    <h1>Dashboard</h1>
+    <div>
+      <h2>Applications</h2>
+      <ul id="applicationsList"></ul>
+    </div>
+    <div>
+      <h2>Media Submissions</h2>
+      <ul id="mediaList"></ul>
+    </div>
+    <script>
+      async function loadApplications() {
+        const response = await fetch("http://localhost:3000/applications");
+        const applications = await response.json();
+        const list = document.getElementById("applicationsList");
+        list.innerHTML = applications.map(app => `<li>${app.name} (${app.email}) - ${app.interests}</li>`).join("");
+      }
+  
+      async function loadMediaSubmissions() {
+        const response = await fetch("http://localhost:3000/mediaSubmissions");
+        const media = await response.json();
+        const list = document.getElementById("mediaList");
+        list.innerHTML = media.map(item => `
+          <li>
+            ${item.name} (${item.email}) - ${item.message}<br>
+            ${item.photoName ? `<img src="uploads/${item.photoName}" alt="Photo" style="max-width: 100px;">` : ""}
+            ${item.videoName ? `<video src="uploads/${item.videoName}" controls style="max-width: 100px;"></video>` : ""}
+          </li>
+        `).join("");
+      }
+  
+      loadApplications();
+      loadMediaSubmissions();
+    </script>
+  </body>
+</html>

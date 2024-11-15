@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Admin Login</h1>
+    <form id="loginForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage"></p>
+  </div>
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Mock admin credentials (replace these with a secure backend authentication system)
+      const adminCredentials = {
+        username: "admin",
+        password: "admin123"
+      };
+
+      if (username === adminCredentials.username && password === adminCredentials.password) {
+        // Store session data
+        localStorage.setItem("isAdmin", true);
+        window.location.href = "media_gallery.html"; // Redirect to the dashboard
+      } else {
+        document.getElementById("loginMessage").textContent = "Invalid credentials. Please try again.";
+      }
+    });
+  </script>
+</body>
+</html>
